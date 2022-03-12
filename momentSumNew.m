@@ -10,7 +10,7 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
     %making an array to hold the point moments and their positions
     pointMomentArray = zeros(5,2);
     %making an array to hold the positions of everything
-    positionArray = zeros(19,2);
+    positionArray = zeros(19,3);
     %populating the reaction force array
     if BeamType == ("Simply Supported Beam")
         if x >= PositionRF(1,1)
@@ -52,18 +52,23 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
             pointMomentArray(i,2) = PositionAPM(i,1);
         end
     end
+    %Filling the Position Array
     for i = 1:3
-        positionArray(i+1,1) = reactionArray(i,2);
+        positionArray(i,1) = reactionArray(i,2);
+        positionArray(i,3) = 0;
     end
     for i = 1:5
-        positionArray(i+4,1) = distributedLoadArray(i,2);
-        positionArray(i+4,2) = distributedLoadArray(i,3);
+        positionArray(i+3,1) = distributedLoadArray(i,2);
+        positionArray(i+3,2) = distributedLoadArray(i,3);
+        positionArray(i+3,3) = 1;
     end
     for i = 1:5
-        positionArray(i+9,1) = pointLoadArray(i,2);
+        positionArray(i+8,1) = pointLoadArray(i,2);
+        positionArray(i+8,3) = 2;
     end
     for i = 1:5
-        positionArray(i+14,1) = pointMomentArray(i,2);
+        positionArray(i+13,1) = pointMomentArray(i,2);
+        positionArray(i+13,3) = 3;
     end
     uniquePosArray = unique(positionArray);
     
@@ -78,10 +83,23 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
         s = shearSum(position, ADL, APM, AppliedForce, BeamType, EndADL, PositionAF, PositionAPM, PositionRF, SolvedReactionArray, StartADL);
         allShears(1,i) = s;
     end
-    for i = 1:posSize - 1
-        tempPos = uniquePosArray(i+1,1);
-        if x < tempPos
-            allMoments(1,i) = allShears(1,i) * (x-uniquePosArray(i,1));
+    for i = 1:pos
+        x = i;
+        for j = 1:posSize
+            a = positionArray(j,2);
+            if positionArray(j,3) == 0
+                n = 1;
+                
+            elseif positionArray(j,3) == 1
+                n = 2;
+                
+            elseif positionArray(j,3) == 2
+                n = 1;
+                
+            elseif positionArray(j,3) == 3
+                n = 2;
+                
+            end
         end
     end
     plot(range,allMoments)
