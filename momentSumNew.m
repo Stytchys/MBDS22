@@ -10,7 +10,7 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
     %making an array to hold the point moments and their positions
     pointMomentArray = zeros(5,2);
     %making an array to hold the positions of everything
-    positionArray = zeros(19,3);
+    positionArray = zeros(19,4);
     %populating the reaction force array
     if BeamType == ("Simply Supported Beam")
         if x >= PositionRF(1,1)
@@ -56,19 +56,23 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
     for i = 1:3
         positionArray(i,1) = reactionArray(i,2);
         positionArray(i,3) = 0;
+        positionArray(i,4) = reactionArray(i,1);
     end
     for i = 1:5
         positionArray(i+3,1) = distributedLoadArray(i,2);
         positionArray(i+3,2) = distributedLoadArray(i,3);
         positionArray(i+3,3) = 1;
+        positionArray(i+3,4) = distributedLoadArray(i,1);
     end
     for i = 1:5
         positionArray(i+8,1) = pointLoadArray(i,2);
         positionArray(i+8,3) = 2;
+        positionArray(i+8,4) = pointLoadArray(i,1);
     end
     for i = 1:5
         positionArray(i+13,1) = pointMomentArray(i,2);
         positionArray(i+13,3) = 3;
+        positionArray(i+13,4) = pointMomentArray(i,1);
     end
     uniquePosArray = unique(positionArray);
     
@@ -77,28 +81,40 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
     range = linspace(0,x,pos);
     allShears = zeros(1,pos);
     allMoments = zeros(1,pos);
-    [posSize,irrel] = size(uniquePosArray);
+    %Populate the shears at every x-value as a sanity check
     for i = 1:pos
         position = range(1,i);
         s = shearSum(position, ADL, APM, AppliedForce, BeamType, EndADL, PositionAF, PositionAPM, PositionRF, SolvedReactionArray, StartADL);
         allShears(1,i) = s;
     end
+    %Use singularity functions and boolean binaries to populate moment
+    %array at every x-value
     for i = 1:pos
+        %just setting x = to i so that the equation is nice to look at
         x = i;
-        for j = 1:posSize
-            a = positionArray(j,2);
+        %iterate for each row of position array
+        for j = 1:19
+            %Set the start and end positions (only distributed loads will
+            %have values for b)
+            a = positionArray(j,1);
+            b = positionArray(j,2);
+            %If the load is a reaction force:
             if positionArray(j,3) == 0
                 n = 1;
-                
+                allMoments(1,i) = positionArray(j,4) * (x - a)^n * (x>a);
+            %If the load is a distributed load:
             elseif positionArray(j,3) == 1
                 n = 2;
-                
+                allMoments(1,i) = positionArray(j,4) * (x - a)^n * (x>a);
+                allMoments(1,i) = -1 * positionArray(j,4) * (x - b)^n * (x>a);
+            %If the load is a point load
             elseif positionArray(j,3) == 2
                 n = 1;
-                
+                allMoments(1,i) = positionArray(j,4) * (x - a)^n * (x>a);
+            %If the load is a concentrated moment
             elseif positionArray(j,3) == 3
-                n = 2;
-                
+                n = 0;
+                allMoments(1,i) = positionArray(j,4) * (x - a)^n * (x>a);
             end
         end
     end
