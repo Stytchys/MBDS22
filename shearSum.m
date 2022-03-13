@@ -45,7 +45,7 @@ function shearCalc = shearSum(x, ADL, APM, AppliedForce, BeamType, EndADL, Posit
     %Sum the shear of the distributed loads if they are before x
     for i = 1:5
         if x > distributedLoadArray(i,2)
-            l = x - distributedLoadArray(i,2);
+            l = round(x,1) - distributedLoadArray(i,2);
             load = l * distributedLoadArray(i,1);
             shearSum = shearSum + load;
         end

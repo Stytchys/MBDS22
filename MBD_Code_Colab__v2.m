@@ -94,7 +94,7 @@ L = TorsionVars(2,1);
 range = linspace(0,L,L*100);
 allMoments = zeros(1,L*100);
 for i = 1:(L*100)
-    position = range(1,i);
+    position = round(range(1,i),1);
     m = momentSumNew(position, ADL, APM, AppliedForce, BeamType, EndADL, PositionAF, PositionAPM, PositionRF, SolvedReactionArray, StartADL);
     allMoments(1,i) = m;
 end

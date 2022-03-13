@@ -94,14 +94,17 @@ L = TorsionVars(2,1);
 range = linspace(0,L,L*100);
 allMoments = zeros(1,L*100);
 for i = 1:(L*100)
-    position = range(1,i);
+    position = round(range(1,i),1);
     m = momentSumNew(position, ADL, APM, AppliedForce, BeamType, EndADL, PositionAF, PositionAPM, PositionRF, SolvedReactionArray, StartADL);
     allMoments(1,i) = m;
 end
 maxM = max(allMoments);
 minM = min(allMoments);
 if abs(minM)>abs(maxM)
-    maxMoment = minM
+    maxMoment = minM;
+else
+    maxMoment = maxM;
+end
 maxBendingStress = -1 * maxMoment * edge / inertia;
 fprintf('The maximum bending stress in the beam is %.2f \n', maxBendingStress);
 
