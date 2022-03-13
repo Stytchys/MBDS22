@@ -98,7 +98,13 @@ for i = 1:(L*100)
     m = momentSumNew(position, ADL, APM, AppliedForce, BeamType, EndADL, PositionAF, PositionAPM, PositionRF, SolvedReactionArray, StartADL);
     allMoments(1,i) = m;
 end
-maxMoment = max(allMoments);
+maxM = max(allMoments);
+minM = min(allMoments);
+if abs(minM)>abs(maxM)
+    maxMoment = minM;
+else
+    maxMoment = maxM;
+end
 maxBendingStress = -1 * maxMoment * edge / inertia;
 fprintf('The maximum bending stress in the beam is %.2f \n', maxBendingStress);
 

@@ -9,6 +9,8 @@ function shearCalc = shearSum(x, ADL, APM, AppliedForce, BeamType, EndADL, Posit
     pointLoadArray = zeros(5,2);
     %making an array to hold the point moments and their positions
     pointMomentArray = zeros(5,2);
+    %rounding out the input value
+    x = round(x,2);
     %populating the reaction force array
     if BeamType == ("Simply Supported Beam")
         reactionArray(1,1) = SolvedReactionArray(1,3);

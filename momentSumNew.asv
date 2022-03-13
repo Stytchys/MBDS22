@@ -74,8 +74,7 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
         positionArray(i+13,3) = 3;
         positionArray(i+13,4) = pointMomentArray(i,1);
     end
-    uniquePosArray = unique(positionArray);
-    
+
     %Initialize Moment sum
     pos = round(x*100)+1;
     range = linspace(0,x,pos);
@@ -91,7 +90,7 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
     %array at every x-value
     for i = 1:pos
         %just setting x = to i so that the equation is nice to look at
-        x = i;
+        x = range(1,i);
         %iterate for each row of position array
         for j = 1:19
             %Set the start and end positions (only distributed loads will
@@ -119,6 +118,5 @@ function momentCalc = momentSumNew(x, ADL, APM, AppliedForce, BeamType, EndADL, 
         end
     end
     plot(range,allMoments)
-    pointMoment = allMoments(1,pos);
-    momentCalc = pointMoment;
+    momentCalc = allMoments(1,pos);
 end
