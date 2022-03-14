@@ -122,7 +122,10 @@ elseif XSecType == 'Circular'
     maxShearStress = -4/3 * maxShear / area;
 end
 fprintf('The maximum shear stress in the beam is %.2f \n', maxShearStress);
-
+plot(range,allShears)
+hold on
+plot(range,allMoments)
+hold off
 %HW4 Code: torsion
 
 if XSecType == 'Circular'
