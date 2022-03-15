@@ -3,7 +3,6 @@
 % Code and functions created by Ray Chen and David Corrente collaboratively
 %
 %-------------------------------------------------------------------------
-
 %Part 1: produce reaction forces/moments
 
 %reads input Excel file for numerical data on solving for beam
