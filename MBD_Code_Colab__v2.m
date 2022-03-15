@@ -1,8 +1,9 @@
 %-------------------------------------------------------------------------
 %
-% Code created by Ray Chen and David Corrente collaboratively
+% Code and functions created by Ray Chen and David Corrente collaboratively
 %
 %-------------------------------------------------------------------------
+
 %Part 1: produce reaction forces/moments
 
 %reads input Excel file for numerical data on solving for beam
@@ -130,6 +131,7 @@ fprintf('The maximum shear stress in the beam is %.2f \n', maxShearStress);
 plot(range,allShears)
 hold on
 plot(range,allMoments)
+plot(range,zeros(1,L*100))
 hold off
 %HW4 Code: torsion
 
