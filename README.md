@@ -4,7 +4,7 @@ MATLAB files for the stress analysis code
 # Currently what's being used
 At the moment the only files being used are:
 
-The problem solving input spreadsheet
+MBD Problem Solver Input.xlsx
 
 momentSumNew.m
 
