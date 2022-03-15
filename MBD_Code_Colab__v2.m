@@ -134,14 +134,21 @@ plot(range,allMoments)
 plot(range,zeros(1,L*100))
 hold off
 %HW4 Code: torsion
-
+torsionArray = zeros(5,1);
+for i = 1:5
+    if TorsionVars(1,1) >= PositionAT(i,1)
+        torsionArray(i,1) = AxialTorque(i,1);
+    end
+end
 if XSecType == 'Circular'
     %R is the constant, set radius of circular cross section
     R = XSecDim(1);
     %J is polar moment calculated from R
     J = pi()*(R^4)/2;
     %Calculating torsional shear stress
-    ShearStressTorsion = sum(AxialTorque)*TorsionVars(1)/J;
+    ShearStressTorsion = sum(torsionArray)*TorsionVars(1)/J;
     %Calculating angle of twist, in radians
-    AngleTwist = sum(AxialTorque)*TorsionVars(2)/Moduli(2)/J;
+    AngleTwist = sum(torsionArray)*TorsionVars(2)/Moduli(2)/J;
+    fprintf('The torsional shear stress at the specified point is: %.2f\n', ShearStressTorsion);
+    fprintf('The angle of twist of the beam at the specified point is: %.2f\n', AngleTwist);
 end
