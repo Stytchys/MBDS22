@@ -133,24 +133,43 @@ hold on
 plot(range,allMoments)
 plot(range,zeros(1,L*100))
 hold off
-%HW4 Code: torsion
+
+%HW4 Code addition: torsion calculations
 
 if XSecType == 'Circular'
-    %R is the constant, set radius of circular cross section
+    %R is the constant radius of circular cross section
     R = XSecDim(1);
-    %J is polar moment calculated from R
+    %J is polar moment calculated from radius, R
     J = pi()*(R^4)/2;
+
+%creation of empty torsion array to set up for torsion calculations
     torsionArray = zeros(5,1);
-    %Only sums torsions up to the wanted x-value
     for i = 1:5
         if TorsionVars(1,1) >= PositionAT(i,1)
             torsionArray(i,1) = AxialTorque(i,1);
         end
     end
+%^Need to change this so that it takes multiple torques and their positions
+%into calculations, also think about multiple radii at different parts of
+%the beam
     %Calculating torsional shear stress
-    ShearStressTorsion = sum(torsionArray)*TorsionVars(1)/J;
+    ShearStressTorsion = sum(torsionArray)*TorsionVars(1)/J
     %Calculating angle of twist, in radians
     AngleTwist = sum(torsionArray)*TorsionVars(2)/Moduli(2)/J;
+    %display torsional shear stress to 2 decimal places
     fprintf('The torsional shear stress at the specified point is: %.2f\n', ShearStressTorsion);
-    fprintf('The angle of twist of the beam at the specified point is: %.4f\n', AngleTwist);
+    %display angle of twist in radians to 4 decimal places
+    fprintf('The angle of twist (in radians) of the beam at the specified point is: %.4f\n', AngleTwist);
 end
+
+%Work In Progress:
+%Torsion calculations (shear, angle of twist) work currently only on one
+%torque, and position is not taken into account yet in angle of twist
+%calculations
+
+%Next Steps:
+%1. work on getting torsion calculations (shear, angle of twist) to work 
+%for multiple torques at multiple placements along the beam
+
+%2. move length of beam to somewhere earlier in spreadsheet (used in plots)
+%and make necessary adjustments in referencing/naming of respective array
