@@ -153,7 +153,7 @@ if XSecType == 'Circular'
 %into calculations, also think about multiple radii at different parts of
 %the beam
     %Calculating torsional shear stress
-    ShearStressTorsion = sum(torsionArray)*TorsionVars(1)/J
+    ShearStressTorsion = sum(torsionArray)*TorsionVars(1)/J;
     %Calculating angle of twist, in radians
     AngleTwist = sum(torsionArray)*TorsionVars(2)/Moduli(2)/J;
     %display torsional shear stress to 2 decimal places
